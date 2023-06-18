@@ -1,0 +1,124 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+skin rose
+
+package Pokedex <<Folder>>{
+
+    package model <<Folder>> {
+
+        abstract Pokemons{
+
+           -id: int
+           -nombre: String
+           -tipo1: String
+           -tipo2: String
+
+           +Pokemons(idPokemon: int, nombrePokemon: String, etapa: String, tipo1: String, tipo2: String)
+           +getIdd(): int
+           +getNombre():String
+           +getTipo1(): String
+           +getTipo3():String
+           +abstract toString(): String
+        }
+
+        class Basico{
+            -evolucionSiguiente1: String
+            -evolucionSiguiente2: String
+            -evolucionSiguiente3: String
+
+            +Basico(idPokemon: int, nombrePokemon: String, etapa: String, evolucionSiguiente1: String, evolucionSiguiente2: String, evolucionSiguiente3: String, tipo1: String, tipo2: String)
+            +getEvolucionSiguiente1(): String
+            +getEvolucionSiguiente2(): String
+            +getEvolucionSiguiente3(): String
+        }
+
+        class PrimeraEvolucion{
+            -evolucionSiguiente: String
+            -evolucionPrevia: String
+
+            +PrimeraEvolucion(idPokemon: int, nombrePokemon: String, etapa: String, evolucionSiguiente: String, evolucionPrevia: String, tipo1: String, tipo2: String)
+            +getEvolucionSiguiente(): String
+            +getEvolucionPrevia(): String
+        }
+
+        class SegundaEvolucion{
+            -evolucionPrevia1: String
+            -evolucionPrevia2: String
+
+            +SegundaEvolucion(idPokemon: int,nombrePokemon: String, etapa: String,evolucionPrevia1: String, evolucionPrevia2: String, tipo1: String, tipo2: String)
+            +getEvolucionPrevia1(): String
+            +getEvolucionPrevia2(): String
+        }
+    }
+
+    package Colecciones <<Folder>>{
+
+        class ListaNexoDoble{
+             -cabeza: NodoDoble
+             -cola : NodoDoble
+             -cantElementos: int
+
+             +ListaNexoDoble()
+             +obtenerPokemonId(id: int):Pokemons
+             +obtenerPokemonNombre(nombre: String):Pokemons
+             +agregarPokemon(pokemon: Pokemon):boolean
+             +getCantElementos():int
+        }
+
+        class NodoDoble{
+            -pokemons: Pokemons
+            -siguiente: NodoDoble
+            -anterior: NodoDoble
+
+            +NodoDoble(pokemon: Pokemon)
+            +getPokemon(): Pokemons
+            +getSiguiente(): NodoDoble
+            +setSiguiente(siguiente: NodoDoble): void
+            +getAnterior(): NodoDoble
+            +setAnterior(anterior: NodoDoble):void
+        }
+    }
+
+    package Services <<Folder>> {
+
+        Interface Sistema{
+            +leerArchivo(): void
+            +ordenarPorId(): void
+            +desplegarPorId(): void
+            +ordenarAlfabeticamente(): void
+            +desplegarAlfabeticamente(): void
+            +desplegarTipo(): void
+            +desplegarPrimeraEvolucion(): void
+            +desplieguePersonalizado(): void
+        }
+
+        class SistemaImpl{
+
+            +SistemaImpl()
+            +main(args[]: String) void
+       }
+    }
+
+
+    Pokemons "1"<--"1" NodoDoble : contiene
+
+    NodoDoble "2"<--"1" NodoDoble : Referencia
+
+    ListaNexoDoble "1"-->"1" NodoDoble : Almacena
+
+    SistemaImpl "1"-->"1" ListaNexoDoble
+
+    SistemaImpl ..> Sistema : Implements
+
+    Basico --> Pokemons : Extends
+    PrimeraEvolucion --> Pokemons : Extends
+    SegundaEvolucion --> Pokemons : Extends
+
+
+}
+
+
+
+
+@enduml
